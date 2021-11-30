@@ -191,7 +191,7 @@ public class CryptographicOperations {
 		resRegRandom = new byte[Constants.randomNumberSize];
 		random.nextBytes(resRegRandom); // Fill the array with random bytes
 		System.out.println("c = " + toHex(resRegRandom));
-		
+			
 		/* Generate a timestamp */
 		Date date = new Date();
 		long regTimestamp = date.getTime();
@@ -254,7 +254,7 @@ public class CryptographicOperations {
 
 		// Encrypt the cleartext
 		CCMBlockCipher ccm = new CCMBlockCipher(new AESEngine());
-		ccm.init(true, new ParametersWithIV(new KeyParameter(Kr), nonce));
+		ccm.init(true, new ParametersWithIV(new KeyParameter(Kr), nonce));// kr, nonce=Z
 		byte[] ciphertext = new byte[cleartext.length + 8];
 		int len = ccm.processBytes(cleartext, 0, cleartext.length, ciphertext, 0);
 		try {
@@ -278,7 +278,9 @@ public class CryptographicOperations {
 		byte[] IDresRegRandomConcat = concatByteArrays(clientIDBytes, resRegRandom);
 		// Do the sha256 of the concatenation
 		byte[] Qu = sha256(IDresRegRandomConcat);
+		System.out.println("Qu: "+toHex(Qu));
 		return toHex(Qu);
+		
 	}
 	
 	public static String generateSymmetricSessionKey(String Ts) {
